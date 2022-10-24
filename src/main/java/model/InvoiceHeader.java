@@ -10,6 +10,10 @@ public class InvoiceHeader {
     private double invoiceTotal;
 
     public InvoiceHeader() {
+        invoiceNum = 0;
+        customerName = "";
+        invoiceDate = "";
+        invoiceTotal = 0.0;
     }
 
     public String getInvoiceDate() {

@@ -17,14 +17,16 @@ public class JTableHelper {
     public static DefaultTableModel constructInvoicesModel(ArrayList<InvoiceHeader> invoiceHeaders) {
         String[] cols = {"No ", "Date", "Customer", "Total"};
         DefaultTableModel defaultTableModel = new DefaultTableModel(cols, 0);
-        for (int i = 0; i < invoiceHeaders.size(); i++) {
-            Object[] rowData = {
-                    invoiceHeaders.get(i).getInvoiceNum(),
-                    invoiceHeaders.get(i).getInvoiceDate(),
-                    invoiceHeaders.get(i).getCustomerName(),
-                    invoiceHeaders.get(i).getInvoiceTotal()
-            };
-            defaultTableModel.addRow(rowData);
+        if(invoiceHeaders != null) {
+            for (int i = 0; i < invoiceHeaders.size(); i++) {
+                Object[] rowData = {
+                        invoiceHeaders.get(i).getInvoiceNum(),
+                        invoiceHeaders.get(i).getInvoiceDate(),
+                        invoiceHeaders.get(i).getCustomerName(),
+                        invoiceHeaders.get(i).getInvoiceTotal()
+                };
+                defaultTableModel.addRow(rowData);
+            }
         }
         return defaultTableModel;
     }

@@ -39,19 +39,20 @@ public class MainFrame extends JFrame {
     public MainFrame() {
         super("Design Preview [New JFrame]");
 
-        invoiceFilePath = "InvoiceHeader.csv";
-        invoiceItemsFilePath = "InvoiceLine.csv";
-
-
-        fillInvoicesList();
-        fillInvoiceItemsListFromFile(this.invoiceItemsFilePath);
-
-        addMeu();
-        initMainPanel();
-        add(mainPanel);
-
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        initFrame();
+
+    }
+
+    public void initFrame() {
+
+        addMeu();
+        // getFilesPath();
+        initMainPanel();
+        add(mainPanel);
+        fillInvoicesList();
+        fillInvoiceItemsListFromFile(this.invoiceItemsFilePath);
 
     }
 
@@ -70,7 +71,12 @@ public class MainFrame extends JFrame {
         initLeftPanel();
         mainPanel.add(leftPanel);
 
-        InvoiceHeader invoiceHeader = invoicesList.get(0);
+        InvoiceHeader invoiceHeader = new InvoiceHeader();
+
+        if (invoicesList != null) {
+            invoiceHeader = invoicesList.get(0);
+
+        }
         initRightPanel(invoiceHeader);
         mainPanel.add(rightPanel);
 
@@ -115,14 +121,28 @@ public class MainFrame extends JFrame {
         leftPanel.add(buttonsPanel);
     }
 
+    public void getFilesPath() {
+        JFileChooser fc = new JFileChooser();
+        if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            JFileChooser fc2 = new JFileChooser();
+            if (fc2.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                String invoiceItemsFilePath = fc2.getSelectedFile().getPath();
+                this.invoiceFilePath = fc.getSelectedFile().getPath();
+                this.invoiceItemsFilePath = invoiceItemsFilePath;
+            }
+        }
+    }
+
     public void fillInvoicesList() {
         FileOperations fileOperations = new FileOperations(this);
-        this.invoicesList = fileOperations.readInvoiceFile(invoiceFilePath);
+        if (invoiceFilePath != null)
+            this.invoicesList = fileOperations.readInvoiceFile(invoiceFilePath);
     }
 
     public void fillInvoiceItemsListFromFile(String filePath) {
         this.invoiceItemsFilePath = filePath;
-        this.invoiceItemsList = new FileOperations(this).readInvoiceLineFile(invoiceItemsFilePath);
+        if (invoiceItemsFilePath != null)
+            this.invoiceItemsList = new FileOperations(this).readInvoiceLineFile(invoiceItemsFilePath);
 
     }
 
@@ -154,17 +174,17 @@ public class MainFrame extends JFrame {
                 BorderFactory.createEtchedBorder(), "Invoice Items", TitledBorder.LEFT,
                 TitledBorder.TOP));
 
+        //if (invoiceItemsFilePath != null) {
+            ArrayList<InvoiceLine> invoiceLines = new InvoiceItemsHelper(invoiceItemsFilePath).getInvoiceItems(invoiceItemsList, invoiceHeader.getInvoiceNum());
 
-        ArrayList<InvoiceLine> invoiceLines = new InvoiceItemsHelper(invoiceItemsFilePath).getInvoiceItems(invoiceItemsList, invoiceHeader.getInvoiceNum());
+            Object[] results = JTableHelper.loadInvoiceItemsTable(invoiceLines);
 
-        Object[] results = JTableHelper.loadInvoiceItemsTable(invoiceLines);
-
-        defaultTableModel = (DefaultTableModel) results[1];
-        invoiceItemsTable = (JTable) results[0];
-        JScrollPane scrollable = new JScrollPane(invoiceItemsTable);
-        scrollable.setPreferredSize(new Dimension(400, 200));
-        tablePanel.add(scrollable);
-
+            defaultTableModel = (DefaultTableModel) results[1];
+            invoiceItemsTable = (JTable) results[0];
+            JScrollPane scrollable = new JScrollPane(invoiceItemsTable);
+            scrollable.setPreferredSize(new Dimension(400, 200));
+            tablePanel.add(scrollable);
+        //}
         saveButton = new JButton("Save");
         saveButton.setActionCommand("S");
         saveButton.addActionListener(new InvoiceLisener(this));
