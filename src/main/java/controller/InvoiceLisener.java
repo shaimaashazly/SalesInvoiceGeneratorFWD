@@ -79,7 +79,7 @@ public class InvoiceLisener implements ActionListener, ListSelectionListener {
             newItem.setInvoiceNum(Integer.parseInt(itemsModel.getValueAt(i, 0).toString()));
             newItem.setItemName((String) itemsModel.getValueAt(i, 1));
             newItem.setItemPrice(Double.parseDouble(itemsModel.getValueAt(i, 2).toString()));
-            newItem.setCount((Integer) itemsModel.getValueAt(i, 3));
+            newItem.setCount(Integer.parseInt(itemsModel.getValueAt(i, 3).toString()));
             totalItems += Double.parseDouble(itemsModel.getValueAt(i, 4).toString());
 
             mainFrame.invoiceItemsList.add(newItem);
@@ -127,7 +127,7 @@ public class InvoiceLisener implements ActionListener, ListSelectionListener {
         String newDate = null;
         try {
             date = simpleDateFormat.parse(invoiceDate);
-           newDate = simpleDateFormat.format(date);
+            newDate = simpleDateFormat.format(date);
         } catch (ParseException e) {
             JOptionPane.showMessageDialog(mainFrame, "Wrong Date Format !!");
             System.exit(0);

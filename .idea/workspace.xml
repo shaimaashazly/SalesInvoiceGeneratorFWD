@@ -7,6 +7,9 @@
     <list default="true" id="a68ab127-14ee-45a6-a64a-cfdfb0fd949a" name="Changes" comment="sales invoice generator maven project for professional track made by shaimaa youssef">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/InvoiceHeader.csv" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceHeader.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/InvoiceLine.csv" beforeDir="false" afterPath="$PROJECT_DIR$/InvoiceLine.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controller/InvoiceLisener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controller/InvoiceLisener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/view/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -32,18 +35,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "D:/Java Project/SalesInvoiceGeneratorMavenProject/src/main/java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.keymap"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Java Project/SalesInvoiceGeneratorMavenProject/src/main/java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="D:\Java Project\SalesInvoiceGeneratorMavenProject\src\main\java" />
@@ -69,7 +72,7 @@
     </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="view.Main" />
-      <module name="SalesInvoiceGeneratorMavenProject" />
+      <module name="SalesInvoiceGeneratorFWD" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="view.*" />
@@ -110,7 +113,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664285929030</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="sales invoice generator maven project for professional track made by shaimaa youssef">
+      <created>1664876883436</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1664876883436</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
