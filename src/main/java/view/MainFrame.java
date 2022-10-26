@@ -121,18 +121,6 @@ public class MainFrame extends JFrame {
         leftPanel.add(buttonsPanel);
     }
 
-    public void getFilesPath() {
-        JFileChooser fc = new JFileChooser();
-        if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            JFileChooser fc2 = new JFileChooser();
-            if (fc2.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                String invoiceItemsFilePath = fc2.getSelectedFile().getPath();
-                this.invoiceFilePath = fc.getSelectedFile().getPath();
-                this.invoiceItemsFilePath = invoiceItemsFilePath;
-            }
-        }
-    }
-
     public void fillInvoicesList() {
         FileOperations fileOperations = new FileOperations(this);
         if (invoiceFilePath != null)
@@ -175,21 +163,21 @@ public class MainFrame extends JFrame {
                 TitledBorder.TOP));
 
         //if (invoiceItemsFilePath != null) {
-            ArrayList<InvoiceLine> invoiceLines = new InvoiceItemsHelper(invoiceItemsFilePath).getInvoiceItems(invoiceItemsList, invoiceHeader.getInvoiceNum());
+        ArrayList<InvoiceLine> invoiceLines = new InvoiceItemsHelper(invoiceItemsFilePath).getInvoiceItems(invoiceItemsList, invoiceHeader.getInvoiceNum());
 
-            Object[] results = JTableHelper.loadInvoiceItemsTable(invoiceLines);
+        Object[] results = JTableHelper.loadInvoiceItemsTable(invoiceLines);
 
-            defaultTableModel = (DefaultTableModel) results[1];
-            invoiceItemsTable = (JTable) results[0];
-            JScrollPane scrollable = new JScrollPane(invoiceItemsTable);
-            scrollable.setPreferredSize(new Dimension(400, 200));
-            tablePanel.add(scrollable);
+        defaultTableModel = (DefaultTableModel) results[1];
+        invoiceItemsTable = (JTable) results[0];
+        JScrollPane scrollable = new JScrollPane(invoiceItemsTable);
+        scrollable.setPreferredSize(new Dimension(400, 200));
+        tablePanel.add(scrollable);
         //}
-        saveButton = new JButton("Save");
+        saveButton = new JButton("Create");
         saveButton.setActionCommand("S");
         saveButton.addActionListener(new InvoiceLisener(this));
 
-        cancelButton = new JButton("Cancel");
+        cancelButton = new JButton("Delete");
         cancelButton.setActionCommand("C");
         cancelButton.addActionListener(new InvoiceLisener(this));
 

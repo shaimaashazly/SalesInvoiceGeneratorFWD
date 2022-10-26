@@ -127,13 +127,15 @@ public class FileOperations {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        printFile();
     }
 
-    public static void main(String[] args) {
+    public void printFile() {
 
         FileOperations fileOperations = new FileOperations(new MainFrame());
-        ArrayList<InvoiceHeader> invoices = fileOperations.readInvoiceFile("InvoiceHeader.csv");
-        ArrayList<InvoiceLine> lines = fileOperations.readInvoiceLineFile("InvoiceLine.csv");
+        ArrayList<InvoiceHeader> invoices = fileOperations.readInvoiceFile(mainFrame.invoiceFilePath);
+        ArrayList<InvoiceLine> lines = fileOperations.readInvoiceLineFile(mainFrame.invoiceItemsFilePath);
         for (int i = 0; i < invoices.size(); i++) {
             InvoiceHeader invoiceHeader = invoices.get(i);
             int invoiceId = invoiceHeader.getInvoiceNum();
