@@ -3,6 +3,7 @@ package controller;
 import model.InvoiceHeader;
 import model.InvoiceLine;
 import view.InvoiceDialog;
+import view.InvoiceItemDialog;
 import view.JTableHelper;
 import view.MainFrame;
 
@@ -14,11 +15,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 
 public class InvoiceLisener implements ActionListener, ListSelectionListener {
     private MainFrame mainFrame;
+    private InvoiceHeader invoiceHeader;
 
     public InvoiceLisener(MainFrame mainFrame) {
         this.mainFrame = mainFrame;
@@ -43,31 +46,54 @@ public class InvoiceLisener implements ActionListener, ListSelectionListener {
     }
 
     private void deleteInvoice() {
-        int selectedInvoiceIndex = mainFrame.invoicesTable.getSelectedRow();
-        int invoiceId = mainFrame.invoicesList.get(selectedInvoiceIndex).getInvoiceNum();
-        mainFrame.invoicesList.remove(selectedInvoiceIndex);
-        DefaultTableModel invoicesModel = JTableHelper.constructInvoicesModel(mainFrame.invoicesList);
-        mainFrame.invoicesTable.setModel(invoicesModel);
-        mainFrame.invoicesTable.repaint();
+        if (mainFrame.invoiceFilePath != null) {
+            int selectedInvoiceIndex = mainFrame.invoicesTable.getSelectedRow();
+            int invoiceId = mainFrame.invoicesList.get(selectedInvoiceIndex).getInvoiceNum();
+            mainFrame.invoicesList.remove(selectedInvoiceIndex);
+            DefaultTableModel invoicesModel = JTableHelper.constructInvoicesModel(mainFrame.invoicesList);
+            mainFrame.invoicesTable.setModel(invoicesModel);
+            mainFrame.invoicesTable.repaint();
 
-        removeInvoiceItems(invoiceId);
-        mainFrame.updateRightPanel(selectedInvoiceIndex);
-        JOptionPane.showMessageDialog(mainFrame, "Invoice Deleted Successfully");
+            removeInvoiceItems(invoiceId);
+            mainFrame.updateRightPanel(selectedInvoiceIndex);
+            JOptionPane.showMessageDialog(mainFrame, "Invoice Deleted Successfully");
+        } else JOptionPane.showMessageDialog(mainFrame, "All changes discarded");
 
     }
 
     private void cancelChanges() {
-        mainFrame.fillInvoicesList();
+
+        ArrayList<InvoiceLine> invoiceLines = new InvoiceItemsHelper(mainFrame.invoiceItemsFilePath).getInvoiceItems(mainFrame.invoiceItemsList, invoiceHeader.getInvoiceNum());
+        int selectedIndex = mainFrame.invoiceItemsTable.getSelectedRow();
+        removeInvoiceItem(invoiceHeader.getInvoiceNum(), invoiceLines.get(selectedIndex).getItemName());
+        invoiceLines.remove(selectedIndex);
+
+
+        DefaultTableModel itemsModel = JTableHelper.constructInvoiceItemsTableModel(invoiceLines);
+        mainFrame.invoiceItemsTable.setModel(itemsModel);
+        mainFrame.invoiceItemsTable.repaint();
+
+
+
+
+      /*  int selectedIndex = mainFrame.invoiceItemsTable.getSelectedRow();
+        mainFrame.invoiceItemsList.remove(selectedIndex);
+
+        DefaultTableModel itemsModel = JTableHelper.constructInvoiceItemsTableModel(mainFrame.invoiceItemsList);
+        mainFrame.invoiceItemsTable.setModel(itemsModel);
+        mainFrame.invoiceItemsTable.repaint();
+
+      /*  mainFrame.fillInvoicesList();
         DefaultTableModel invoicesModel = JTableHelper.constructInvoicesModel(mainFrame.invoicesList);
         mainFrame.invoicesTable.setModel(invoicesModel);
-        mainFrame.invoicesTable.repaint();
+        mainFrame.invoicesTable.repaint();*/
 
-        mainFrame.updateRightPanel(0);
+        //mainFrame.updateRightPanel(0);
         JOptionPane.showMessageDialog(mainFrame, "All changes discarded");
     }
 
     private void saveChanges() {
-        InvoiceHeader newInvoiceHeader = new InvoiceHeader();
+/*        InvoiceHeader newInvoiceHeader = new InvoiceHeader();
         double totalItems = 0;
 
         DefaultTableModel itemsModel = (DefaultTableModel) mainFrame.invoiceItemsTable.getModel();
@@ -96,7 +122,10 @@ public class InvoiceLisener implements ActionListener, ListSelectionListener {
             }
         }
 
-        mainFrame.updateRightPanel(mainFrame.invoicesTable.getSelectedRow());
+        mainFrame.updateRightPanel(mainFrame.invoicesTable.getSelectedRow());*/
+        InvoiceItemDialog dialog = new InvoiceItemDialog(mainFrame, invoiceHeader);
+        dialog.pack();
+        dialog.setVisible(true);
     }
 
     private void removeInvoiceItems(int invoiceId) {
@@ -107,10 +136,20 @@ public class InvoiceLisener implements ActionListener, ListSelectionListener {
         }
     }
 
+    private void removeInvoiceItem(int invoiceId, String itemName) {
+        int size = this.mainFrame.invoiceItemsList.size();
+        for (int index = size - 1; index >= 0; index--) {
+            if (this.mainFrame.invoiceItemsList.get(index).getInvoiceNum() == invoiceId && mainFrame.invoiceItemsList.get(index).getItemName().equals(itemName))
+                this.mainFrame.invoiceItemsList.remove(this.mainFrame.invoiceItemsList.get(index));
+        }
+    }
+
     private void createNewInvoice() {
-        InvoiceDialog dialog = new InvoiceDialog(mainFrame);
-        dialog.pack();
-        dialog.setVisible(true);
+        if (mainFrame.invoiceFilePath != null) {
+            InvoiceDialog dialog = new InvoiceDialog(mainFrame);
+            dialog.pack();
+            dialog.setVisible(true);
+        } else JOptionPane.showMessageDialog(mainFrame, "load invoice files first");
     }
 
     @Override
@@ -118,6 +157,8 @@ public class InvoiceLisener implements ActionListener, ListSelectionListener {
     public void valueChanged(ListSelectionEvent e) {
         int selectedIndex = mainFrame.invoicesTable.getSelectedRow();
         mainFrame.updateRightPanel(selectedIndex);
+        if (selectedIndex != -1)
+            setInvoiceHeader(mainFrame.invoicesList.get(selectedIndex));
     }
 
     public static String validateDate(String invoiceDate, MainFrame mainFrame) {
@@ -133,5 +174,10 @@ public class InvoiceLisener implements ActionListener, ListSelectionListener {
             System.exit(0);
         }
         return newDate;
+    }
+
+    public void setInvoiceHeader(InvoiceHeader invoiceHeader) {
+        if (invoiceHeader != null)
+            this.invoiceHeader = invoiceHeader;
     }
 }

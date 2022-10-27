@@ -13,7 +13,6 @@ public class InvoiceDialog extends JDialog {
     private JButton buttonCancel;
     private JTextField textField1;
     private JTextField textField2;
-    private JTextField textField3;
 
     private MainFrame mainFrame;
 
@@ -60,7 +59,6 @@ public class InvoiceDialog extends JDialog {
         InvoiceHeader invoiceHeader = new InvoiceHeader();
         invoiceHeader.setInvoiceDate(InvoiceLisener.validateDate(textField1.getText(), mainFrame));
         invoiceHeader.setCustomerName(textField2.getText());
-        invoiceHeader.setInvoiceTotal(Double.parseDouble(textField3.getText()));
         int lastId = 0;
         for (int i = 0; i < mainFrame.invoicesList.size(); i++) {
             InvoiceHeader inv = mainFrame.invoicesList.get(i);
@@ -75,10 +73,6 @@ public class InvoiceDialog extends JDialog {
         mainFrame.invoicesTable.repaint();
 
         dispose();
-
-        InvoiceItemDialog dialog = new InvoiceItemDialog(mainFrame, invoiceHeader);
-        dialog.pack();
-        dialog.setVisible(true);
 
     }
 

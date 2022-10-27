@@ -5,7 +5,6 @@ public class InvoiceLine {
     private String itemName;
     private double itemPrice;
     private int count;
-    private double itemTotalPrice;
 
     public InvoiceLine() {
 

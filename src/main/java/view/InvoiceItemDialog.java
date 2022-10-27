@@ -68,9 +68,15 @@ public class InvoiceItemDialog extends JDialog {
         dispose();
 
         ArrayList<InvoiceLine> invoiceLines = new InvoiceItemsHelper(mainFrame.invoiceItemsFilePath).getInvoiceItems(mainFrame.invoiceItemsList, currentInvoiceHeader.getInvoiceNum());
+
+        DefaultTableModel invoicesModel = JTableHelper.constructInvoicesModel(mainFrame.invoicesList);
+        mainFrame.invoicesTable.setModel(invoicesModel);
+        mainFrame.invoicesTable.repaint();
+
         DefaultTableModel itemsModel = JTableHelper.constructInvoiceItemsTableModel(invoiceLines);
         mainFrame.invoiceItemsTable.setModel(itemsModel);
         mainFrame.invoiceItemsTable.repaint();
+
         mainFrame.setControlsValues(currentInvoiceHeader);
 
     }
@@ -93,10 +99,12 @@ public class InvoiceItemDialog extends JDialog {
 
         System.out.println("Items size : " + mainFrame.invoiceItemsList.size());
         InvoiceLine newItem = new InvoiceLine();
+        System.out.println(currentInvoiceHeader.getInvoiceNum());
         newItem.setInvoiceNum(currentInvoiceHeader.getInvoiceNum());
         newItem.setItemName(itemNameTF.getText());
         newItem.setItemPrice(Double.parseDouble(priceTF.getText()));
         newItem.setCount(Integer.parseInt(countTF.getText()));
+        currentInvoiceHeader.setInvoiceTotal(currentInvoiceHeader.getInvoiceTotal() + newItem.getItemTotalPrice());
         mainFrame.invoiceItemsList.add(newItem);
 
     }

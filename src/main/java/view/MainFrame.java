@@ -35,13 +35,16 @@ public class MainFrame extends JFrame {
     public JLabel invTotalTF;
     public JButton saveButton;
     public JButton cancelButton;
+    public InvoiceLisener lisener;
 
     public MainFrame() {
         super("Design Preview [New JFrame]");
 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        lisener = new InvoiceLisener(this);
         initFrame();
+
 
     }
 
@@ -90,11 +93,11 @@ public class MainFrame extends JFrame {
 
         JButton createButton = new JButton("Create New Invoice");
         createButton.setActionCommand("N");
-        createButton.addActionListener(new InvoiceLisener(this));
+        createButton.addActionListener(lisener);
 
         JButton deleteButton = new JButton("Delete Invoice");
         deleteButton.setActionCommand("D");
-        deleteButton.addActionListener(new InvoiceLisener(this));
+        deleteButton.addActionListener(lisener);
 
         tablePanel.setBorder(BorderFactory.createTitledBorder(
                 BorderFactory.createEtchedBorder(), "Invoices Table", TitledBorder.LEFT,
@@ -108,7 +111,7 @@ public class MainFrame extends JFrame {
         JScrollPane jScrollPane = new JScrollPane(invoicesTable);
         jScrollPane.setPreferredSize(new Dimension(500, 300));
         invoicesTable.setDefaultEditor(Object.class, null);
-        invoicesTable.getSelectionModel().addListSelectionListener(new InvoiceLisener(this));
+        invoicesTable.getSelectionModel().addListSelectionListener(lisener);
 
 
         tablePanel.add(jScrollPane);
@@ -175,11 +178,11 @@ public class MainFrame extends JFrame {
         //}
         saveButton = new JButton("Create");
         saveButton.setActionCommand("S");
-        saveButton.addActionListener(new InvoiceLisener(this));
+        saveButton.addActionListener(lisener);
 
         cancelButton = new JButton("Delete");
         cancelButton.setActionCommand("C");
-        cancelButton.addActionListener(new InvoiceLisener(this));
+        cancelButton.addActionListener(lisener);
 
         buttonsPanel.add(saveButton);
         buttonsPanel.add(cancelButton);
@@ -209,6 +212,7 @@ public class MainFrame extends JFrame {
             invNumTF.setText(String.valueOf(invoiceHeader.getInvoiceNum()));
             invDateTF.setText(invoiceHeader.getInvoiceDate().toString());
             customerNmTF.setText(invoiceHeader.getCustomerName());
+            invTotalTF.setText("");
             invTotalTF.setText(String.valueOf(invoiceHeader.getInvoiceTotal()));
         } else {
             invNumTF.setText("0");
